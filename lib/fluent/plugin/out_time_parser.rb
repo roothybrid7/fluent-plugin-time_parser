@@ -8,6 +8,7 @@ module Fluent
 
     config_param :key, :string, :default => 'time'
     config_param :time_zone, :string, :default => ''
+    config_param :usec_digit, :integer, :default => 6
     config_param :parsed_time_tag, :string, :default => 'parsed_time'
     config_param :parsed_hour_tag, :string, :default => 'parsed_hour'
     config_param :parsed_date_tag, :string, :default => 'parsed_date'
@@ -58,9 +59,9 @@ module Fluent
         date = record_time.to_date.to_s
         hour = record_time.hour.to_s
 
-        record[parsed_time_tag] = record_time.to_s
-        record[parsed_date_tag] = date
-        record[parsed_hour_tag] = hour
+        record[parsed_time_tag] = record_time.iso8601(usec_digit)
+        record[parsed_date_tag] = date if parsed_date_tag
+        record[parsed_hour_tag] = hour if parsed_hour_tag
 
       rescue ArgumentError => error
         $log.warn("out_extract_query_params: #{error.message}")

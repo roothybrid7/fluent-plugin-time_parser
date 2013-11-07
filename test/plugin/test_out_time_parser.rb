@@ -5,8 +5,9 @@ require 'tzinfo'
 
 class TimeParserOutputTest < Test::Unit::TestCase
 
-  TIME = "2013-04-14T06:14:36Z"
-  GIRIGIRI_TIME = "2013-05-14T15:14:36Z"
+  #"2013-10-30T11:40:37.096800Z"
+  TIME = "2013-04-14T06:14:36.096800Z"
+  GIRIGIRI_TIME = "2013-05-14T15:14:36.096800Z"
 
   def setup
     Fluent::Test.setup
@@ -64,7 +65,7 @@ class TimeParserOutputTest < Test::Unit::TestCase
     d.instance.filter_record('test', Time.now, record)
 
     assert_equal record['time'], TIME
-    assert_equal record['parsed_time'], "2013-04-14T15:14:36+09:00"
+    assert_equal record['parsed_time'], "2013-04-14T15:14:36.096800+09:00"
     assert_equal record['parsed_date'], "2013-04-14"
     assert_equal record['parsed_hour'], "15"
   end
@@ -80,7 +81,7 @@ class TimeParserOutputTest < Test::Unit::TestCase
     d.instance.filter_record('test', Time.now, record)
 
     assert_equal record['time'], GIRIGIRI_TIME
-    assert_equal record['parsed_time'], "2013-05-15T00:14:36+09:00"
+    assert_equal record['parsed_time'], "2013-05-15T00:14:36.096800+09:00"
     assert_equal record['parsed_date'], "2013-05-15"
     assert_equal record['parsed_hour'], "0"
   end
