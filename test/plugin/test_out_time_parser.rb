@@ -158,4 +158,21 @@ class TimeParserOutputTest < Test::Unit::TestCase
     assert_equal wrong_time, emits[0][2]['time']
   end
 
+  def test_usec_digit_with_zero
+    d = create_driver(%[
+      key            time
+      add_tag_prefix extracted.
+      time_zone      Asia/Tokyo
+      usec_digit     0
+    ])
+    tag    = 'test'
+    record = {'time' => TIME}
+    d.instance.filter_record('test', Time.now, record)
+
+    assert_equal record['time'], TIME
+    assert_equal record['parsed_time'], "2013-04-14T15:14:36+09:00"
+    assert_equal record['parsed_date'], "2013-04-14"
+    assert_equal record['parsed_hour'], "15"
+  end
+
 end
